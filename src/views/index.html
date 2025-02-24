@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Cadastro de Cidadãos</title>
-
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     form { max-width: 400px; margin: auto; }
@@ -11,7 +10,6 @@
     input[type="text"] { width: 100%; padding: 8px; }
     input[type="submit"] { margin-top: 20px; padding: 10px 20px; }
   </style>
-  
 </head>
 <body>
   <h1>Cadastro de Cidadãos Brasileiros</h1>
@@ -20,9 +18,13 @@
     <input type="text" id="nome" name="nome" required>
     
     <label for="cpf">CPF:</label>
-    <input type="text" id="cpf" name="cpf" required maxlength="11">
+    
+    <input type="text" id="cpf" name="cpf" required maxlength="14">
     
     <input type="submit" value="Cadastrar">
   </form>
+
+  <!-- js externo pra mascara do cpf -->
+  <script src="js/cpfMask.js"></script>
 </body>
 </html>
