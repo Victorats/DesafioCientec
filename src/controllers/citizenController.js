@@ -1,43 +1,38 @@
 const Citizen = require('../models/citizen');
-const CPFValidator = require('../utils/cpfValidator');
-const citizenRepository = require('../repositories/citizenRepository');
 
 class CitizenController {
-  addCitizen(nome, cpf, callback) {
-    
-    if (!CPFValidator.isValid(cpf)) {
-      return callback({ message: 'CPF inválido', success: false });
+  // Construtor que recebe as dependências
+  constructor(citizenRepository, cpfValidator) {
+    this.citizenRepository = citizenRepository;
+    this.cpfValidator = cpfValidator;
+  }
+
+  async addCitizen(nome, cpf) {
+    if (!this.cpfValidator.isValid(cpf)) {
+      throw new Error('CPF inválido');
     }
 
-    //verifica se ja exsite
-    citizenRepository.findCitizenByCPF(cpf, (err, existingCitizen) => {
-      if (err) {
-        return callback({ message: 'Erro ao verificar cidadão existente', success: false });
-      }
-      if (existingCitizen) {
-        return callback({ message: 'Cidadão já cadastrado', success: false });
-      }
+    const existingCitizen = await this.citizenRepository.findCitizenByCPF(cpf);
+    if (existingCitizen) {
+      throw new Error('Cidadão já cadastrado');
+    }
 
-      //cria um novo e adiciona no bd
-      const citizen = new Citizen(nome, cpf);
-
-      
-      citizenRepository.addCitizen(citizen, (err, insertedCitizen) => {
-        if (err) {
-          return callback({ message: 'Erro ao cadastrar cidadão', success: false });
-        }
-        return callback(null, { success: true, message: 'Cidadão cadastrado com sucesso', citizen: insertedCitizen });
-      });
-    });
+    const citizen = new Citizen(nome, cpf);
+    const insertedCitizen = await this.citizenRepository.addCitizen(citizen);
+    return {
+      success: true,
+      message: 'Cidadão cadastrado com sucesso',
+      citizen: insertedCitizen
+    };
   }
 
-  findCitizenByCPF(cpf, callback) {
-    citizenRepository.findCitizenByCPF(cpf, callback);
+  async findCitizenByCPF(cpf) {
+    return await this.citizenRepository.findCitizenByCPF(cpf);
   }
 
-  findCitizenByName(nome, callback) {
-    citizenRepository.findCitizenByName(nome, callback);
+  async findCitizenByName(nome) {
+    return await this.citizenRepository.findCitizenByName(nome);
   }
 }
 
-module.exports = new CitizenController();
+module.exports = CitizenController;
