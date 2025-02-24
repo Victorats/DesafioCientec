@@ -51,5 +51,5 @@ Agora você pode utilizar a aplicação para cadastrar e pesquisar cidadãos!
 
 ---
 
-Feito por [Victor Afonso Teixeira Santos]
+Feito por Victor Afonso Teixeira Santos
 
