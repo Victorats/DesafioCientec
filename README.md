@@ -29,7 +29,7 @@ Baixe e instale o Node.js a partir do site oficial: [https://nodejs.org](https:/
 
 ### 5️º **Inicie o servidor**
 ```bash
-  node server.js
+  node index.js
 ```
 
 ### 6️º **Acesse no navegador**
